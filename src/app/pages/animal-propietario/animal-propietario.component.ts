@@ -16,13 +16,14 @@ import { AnonymousSubject } from "rxjs/internal/Subject";
   styleUrls: ['./animal-propietario.component.css']
 })
 export class AnimalPropietarioComponent implements OnInit {
-  
+
   param_ani_id: string = "";
+  param_aob_id: string = "";
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: any;
   dtTrigger: Subject<void> = new Subject<void>();
-  dtOptions: any = {  
+  dtOptions: any = {
     columnDefs: [
       { width: '5px', targets: 0 },
       { width: '300px', targets: 1 },
@@ -39,7 +40,7 @@ export class AnimalPropietarioComponent implements OnInit {
     ],
     lengthChange: false,
     searching: false,
-    lengthMenu: [15], 
+    lengthMenu: [15],
     paging: true,
     language: {
       url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
@@ -66,6 +67,17 @@ export class AnimalPropietarioComponent implements OnInit {
   dataAnimalPropietario:any;
   dataPropietarioform:any;
 
+  //listado obersvaciones
+
+  p_aob_id:number=0;
+  p_ani_id:number=0;
+  p_aob_activo:number=1;
+  p_aob_descri:string='';
+  dataAnimalObservacion:any;
+//datos oberserbaciones
+
+
+//
   esp_descri:string='';
   anr_descri:string='';
   ans_descri:string='';
@@ -102,7 +114,7 @@ export class AnimalPropietarioComponent implements OnInit {
   p_per_numdoi:string='';
   p_anp_fecini:string='';
   modalRef: BsModalRef | undefined;
-  
+
   constructor(private appComponent: AppComponent
     , private serviceMaster: MasterService
     , private router: Router
@@ -116,6 +128,7 @@ export class AnimalPropietarioComponent implements OnInit {
   ngOnInit(): void {
     this.param_ani_id = this.route.snapshot.params['ani_id'];
     this.ListarAnimalPropietario();
+    this.ListarAnimalObservaciones()
     this.ListarAnimal();
     this.listarTipoDocumentoIdentidad();
     this.setTodayDate();
@@ -124,7 +137,7 @@ export class AnimalPropietarioComponent implements OnInit {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
-  
+
   ngAfterViewInit() {
     this.dtTrigger.next();
   }
@@ -141,7 +154,7 @@ export class AnimalPropietarioComponent implements OnInit {
   setTodayDate() {
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0];
-  
+
     this.p_anp_fecini = formattedDate;
   }
 
@@ -171,6 +184,33 @@ export class AnimalPropietarioComponent implements OnInit {
       next: (data: any) => {
         this.spinner.show();
         this.dataAnimalPropietario = data;
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.destroy();
+          this.dtTrigger.next();
+        });
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 1000);
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
+  }
+
+  ListarAnimalObservaciones() {
+    this.spinner.show();
+    let data_post = {
+      p_aob_id: this.param_aob_id,
+      p_ani_id: this.param_ani_id,
+      p_aob_activo: this.p_aob_activo
+
+    };
+
+    this.sanidadService.ListarAnimalobservaciones(data_post).subscribe({
+      next: (data: any) => {
+        this.spinner.show();
+        this.dataAnimalObservacion = data;
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.destroy();
           this.dtTrigger.next();
@@ -247,8 +287,63 @@ export class AnimalPropietarioComponent implements OnInit {
     });
   }
 
+  guardarObservacion() {
+    // Validar si el campo de observación está vacío
+    if (this.p_aob_descri.trim() === "") {
+      Swal.fire('Debe ingresar una observación', 'Vuelva a intentarlo', 'error');
+      return;  // Si está vacío, se detiene la ejecución de la función.
+    } else {
+      // Preparar los datos para el envío
+      let dataPost = {
+        p_ani_id: this.param_ani_id,
+        p_aob_descri: this.p_aob_descri,
+        p_aob_activo: this.p_aob_activo,
+      };
+
+      // Mostrar un mensaje de confirmación
+      Swal.fire({
+        title: '<b>Confirmación</b>',
+        text: "¿Estás seguro de guardar la información?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Llamada al servicio para guardar la observación
+          this.sanidadService.GuardarAnimalObservacion(dataPost).subscribe({
+            next: (data: any) => {
+              let result = data[0];
+              if (result.hasOwnProperty('error')) {
+                if (result.error === 0) {
+                  Swal.fire({ title: '<h2>Confirmación</h2>', text: result.mensa, icon: 'success', confirmButtonText: 'Cerrar', confirmButtonColor: "#3085d6" }).then((result) => {
+                    if (result.isConfirmed) {
+                      this.CerrarModal();
+                      window.location.reload();
+                    }
+                  });
+                } else {
+                  Swal.fire(result.mensa, 'Verifique los datos', 'error')
+                }
+              } else {
+                Swal.fire('Ocurrió un error', 'Vuelva a intentarlo', 'error')
+              }
+            },
+            error: (error: any) => {
+              console.log(error);
+            }
+          });
+        }
+      });
+    }
+  }
+
+
+
   guardarRegistro(){
-    if(this.p_per_id == 0){
+    if(this.p_ani_id == 0){
       Swal.fire('Debe ingresar un Propietario', 'Vuelva a intentarlo', 'error');
     }else{
       let dataPost = {
@@ -293,6 +388,7 @@ export class AnimalPropietarioComponent implements OnInit {
       })
     }
   }
+
 
   validarNumero(event: any): void {
     const keyCode = event.keyCode;

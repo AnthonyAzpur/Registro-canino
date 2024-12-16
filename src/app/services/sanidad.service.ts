@@ -261,9 +261,23 @@ export class SanidadService {
         })
     );
   }
+  ListarAnimalobservaciones(data: any) {
+    return this.httpClientUtils.postQuery('sanidad/animalobservacionsel', data).pipe(
+        map(data => {
+            return data;
+        })
+    );
+  }
 
   GuardarAnimalPropietario(data: any) {
     return this.httpClientUtils.postQuery('sanidad/animalpropietarioreg', data).pipe(
+        map(data => {
+            return data;
+        })
+    );
+  }
+  GuardarAnimalObservacion(data: any) {
+    return this.httpClientUtils.postQuery('sanidad/animalobservacionreg', data).pipe(
         map(data => {
             return data;
         })
