@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-// import { AdministracionService } from 'src/app/services/administracion.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   usu_apemat: string | null = "";
   usu_apepat: string | null = "";
   usu_id: string | null = "";
@@ -19,8 +18,16 @@ export class NavbarComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getdataUsuario();
+
+    // Detectar cuando el usuario cierra la página o navegador
+    window.addEventListener('beforeunload', () => this.delDatosSession());
+  }
+
+  ngOnDestroy() {
+    // Limpiar el evento cuando el componente sea destruido
+    window.removeEventListener('beforeunload', () => this.delDatosSession());
   }
 
   delDatosSession() {
@@ -31,8 +38,6 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem("usu_nombre");
     localStorage.removeItem("usu_nomcom");
     localStorage.removeItem('session-dashboard');
-
-    window.location.href = "login";
   }
 
   getdataUsuario() {
@@ -44,11 +49,11 @@ export class NavbarComponent implements OnInit {
     this.usu_nomcom = localStorage.getItem("usu_nomcom");
   }
 
-  changeLayoutMode(mode: string){
+  changeLayoutMode(mode: string) {
     let htmlSelector = document.getElementsByTagName('html')[0];
     let tableSelector = document.querySelectorAll('thead, tfoot');
 
-    if(mode == 'light'){
+    if (mode == 'light') {
       htmlSelector.setAttribute('data-topbar', 'light');
       htmlSelector.setAttribute('data-sidebar', 'light');
       htmlSelector.setAttribute('data-bs-theme', 'light');
@@ -59,7 +64,7 @@ export class NavbarComponent implements OnInit {
       });
 
       this.layoutModeIcon = 'sun';
-    }else{
+    } else {
       htmlSelector.setAttribute('data-topbar', 'dark');
       htmlSelector.setAttribute('data-sidebar', 'dark');
       htmlSelector.setAttribute('data-bs-theme', 'dark');
@@ -72,27 +77,4 @@ export class NavbarComponent implements OnInit {
       this.layoutModeIcon = 'moon';
     }
   }
-
-  // companyList(){
-  //   this.dataEmpresas = [];
-
-  //   let data = {
-  //     p_com_id: 0
-  //   }
-
-  //   this.administracionService.postGetCompanyList(data).subscribe({
-  //     next: (result: any) => {
-  //       console.log(result);
-  //       this.dataEmpresas = result;
-  //     },
-  //     error: (error: any) => {
-  //       console.error(error);
-  //     }
-  //   });
-  // }
-
-  setDefaultCompany(id: number){
-
-  }
-
 }

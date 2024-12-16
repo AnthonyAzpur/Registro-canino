@@ -81,7 +81,7 @@ export class CrearMascotaComponent implements OnInit {
     this.especiesel();
     this.animalsexosel();
   }
-  
+
   ChangeMuerto(){
     console.log(this.p_ani_muerto);
     if (this.p_ani_muerto) {
@@ -90,7 +90,7 @@ export class CrearMascotaComponent implements OnInit {
       this.confsimuerto = 'NO';
     }
   }
-  
+
   ChangeEsteri(){
     console.log(this.p_ani_esteri);
     if (this.p_ani_esteri) {
@@ -160,7 +160,7 @@ export class CrearMascotaComponent implements OnInit {
             let result = data[0];
             if (result.hasOwnProperty('error')) {
               if (result.error === 0) {
-                
+
                 Swal.fire({
                   title: '<h2>Confirmación</h2>',
                   text: result.mensa,
@@ -210,7 +210,7 @@ export class CrearMascotaComponent implements OnInit {
       p_anr_id: 0,
       p_esr_activo: 9,
     };
-    
+
     this.sanidadService.especierazasel(post).subscribe({
       next: (data: any) => {
         this.datosTipoRaza = data;
@@ -226,7 +226,7 @@ export class CrearMascotaComponent implements OnInit {
     let post = {
       p_ans_id: 0,
       p_ans_descri: '',
-      p_ans_activo: 9,
+      p_ans_activo: 1,
     };
     this.sanidadService.animalsexosel(post).subscribe({
       next: (data: any) => {
