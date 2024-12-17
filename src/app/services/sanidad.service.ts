@@ -268,6 +268,13 @@ export class SanidadService {
         })
     );
   }
+  ListarAnimaloVacunas(data: any) {
+    return this.httpClientUtils.postQuery('sanidad/animalvacunasel', data).pipe(
+        map(data => {
+            return data;
+        })
+    );
+  }
 
   GuardarAnimalPropietario(data: any) {
     return this.httpClientUtils.postQuery('sanidad/animalpropietarioreg', data).pipe(
@@ -278,6 +285,13 @@ export class SanidadService {
   }
   GuardarAnimalObservacion(data: any) {
     return this.httpClientUtils.postQuery('sanidad/animalobservacionreg', data).pipe(
+        map(data => {
+            return data;
+        })
+    );
+  }
+  GuardarAnimalVacuna(data: any) {
+    return this.httpClientUtils.postQuery('sanidad/animalvacunareg', data).pipe(
         map(data => {
             return data;
         })

@@ -19,6 +19,7 @@ export class AnimalPropietarioComponent implements OnInit {
 
   param_ani_id: string = "";
   param_aob_id: string = "";
+  param_ava_id: string = "";
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: any;
@@ -74,9 +75,11 @@ export class AnimalPropietarioComponent implements OnInit {
   p_aob_activo:number=1;
   p_aob_descri:string='';
   dataAnimalObservacion:any;
-//datos oberserbaciones
-
-
+//listado de vacunas
+  p_ava_descri:string='';
+  p_ava_fecvac:string='';
+  p_ava_activo:number=1;
+  dataAnimalVacunas:any;
 //
   esp_descri:string='';
   anr_descri:string='';
@@ -128,7 +131,8 @@ export class AnimalPropietarioComponent implements OnInit {
   ngOnInit(): void {
     this.param_ani_id = this.route.snapshot.params['ani_id'];
     this.ListarAnimalPropietario();
-    this.ListarAnimalObservaciones()
+    this.ListarAnimalObservaciones();
+    this.ListarAnimalVacuna();
     this.ListarAnimal();
     this.listarTipoDocumentoIdentidad();
     this.setTodayDate();
@@ -224,6 +228,35 @@ export class AnimalPropietarioComponent implements OnInit {
       }
     });
   }
+
+  ListarAnimalVacuna() {
+    this.spinner.show();
+    let data_post = {
+      p_ava_id: this.param_ava_id,
+      p_ani_id: this.param_ani_id,
+      p_ava_activo: this.p_ava_activo
+
+    };
+
+    this.sanidadService.ListarAnimaloVacunas(data_post).subscribe({
+      next: (data: any) => {
+        this.spinner.show();
+        this.dataAnimalVacunas = data;
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.destroy();
+          this.dtTrigger.next();
+        });
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 1000);
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
+  }
+
+
 
   ListarAnimal() {
     let data_post = {
@@ -340,6 +373,60 @@ export class AnimalPropietarioComponent implements OnInit {
     }
   }
 
+
+  guardarVacuna() {
+    // Validar si el campo de observación está vacío
+    if (this.p_ava_descri.trim() === "") {
+      Swal.fire('Debe ingresar una nombre de la vacuna', 'Vuelva a intentarlo', 'error');
+      return;  // Si está vacío, se detiene la ejecución de la función.
+    } else {
+      // Preparar los datos para el envío
+      let dataPost = {
+        p_ani_id: this.param_ani_id,
+        p_ava_descri: this.p_ava_descri,
+        p_ava_fecvac: this.p_ava_fecvac,
+        p_ava_activo: this.p_ava_activo,
+      };
+
+      // Mostrar un mensaje de confirmación
+      Swal.fire({
+        title: '<b>Confirmación</b>',
+        text: "¿Estás seguro de guardar la información?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Llamada al servicio para guardar la observación
+          this.sanidadService.GuardarAnimalVacuna(dataPost).subscribe({
+            next: (data: any) => {
+              let result = data[0];
+              if (result.hasOwnProperty('error')) {
+                if (result.error === 0) {
+                  Swal.fire({ title: '<h2>Confirmación</h2>', text: result.mensa, icon: 'success', confirmButtonText: 'Cerrar', confirmButtonColor: "#3085d6" }).then((result) => {
+                    if (result.isConfirmed) {
+                      this.CerrarModal();
+                      window.location.reload();
+                    }
+                  });
+                } else {
+                  Swal.fire(result.mensa, 'Verifique los datos', 'error')
+                }
+              } else {
+                Swal.fire('Ocurrió un error', 'Vuelva a intentarlo', 'error')
+              }
+            },
+            error: (error: any) => {
+              console.log(error);
+            }
+          });
+        }
+      });
+    }
+  }
 
 
   guardarRegistro(){
