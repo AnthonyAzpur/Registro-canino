@@ -91,7 +91,7 @@
                                                   </div>
                                                   <div class="col-md-4">
                                                     <div class="form-floating">
-                                                      <select class="form-select" [(ngModel)]="p_anr_id" data-choices-sorting="true" (change)="peligrososion()">
+                                                      <select class="form-select" [(ngModel)]="p_anr_id" data-choices-sorting="true" (change)="valorSeleccionadoSelect($event)">
                                                         <option selected="" value="0">Seleccione...</option>
                                                         <option *ngFor="let data of datosTipoRaza" value="{{data.anr_id}}">
                                                           {{data.anr_descri}}

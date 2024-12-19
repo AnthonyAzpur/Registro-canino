@@ -230,42 +230,47 @@ export class CrearMascotaComponent implements OnInit {
 
   }
 
+  valorSeleccionadoSelect(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value;
+    console.log(value);
 
-  peligrososion() {
-    if (this.p_anr_id == 2) {
+    let post = {
+      p_esp_id: 0,
+      p_anr_id: Number(value),
+      p_esr_activo: 1,
+    };
 
-      this.isSaveDisabled = true;
-      console.log("p_anr_id es 2, botón deshabilitado.");
-      Swal.fire({
-        title: '¡Advertencia!',
-        text: 'Este animal es peligroso, ¿deseas guardar el registro?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.isSaveDisabled = false;
-          console.log("El registro puede guardarse.");
-        } else {
+    this.sanidadService.especierazasel(post).subscribe({
+      next: (data: any) => {
+        if (data[0].anr_altplg==true) {
           this.isSaveDisabled = true;
-          console.log("El registro no puede guardarse.");
+          Swal.fire({
+            title: '¡Advertencia!',
+            text: 'Este animal es peligroso, ¿deseas guardar el registro?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.isSaveDisabled = false;
+              console.log("El registro puede guardarse.");
+            } else {
+              this.isSaveDisabled = true;
+              console.log("El registro no puede guardarse.");
+            }
+          });
+
+        } else {
+          this.isSaveDisabled = false;
         }
-      });
-
-    } else {
-      
-      console.log(this.p_anr_id, "<-- estes es el valorr ")
-      this.isSaveDisabled = false;
-      console.log("p_anr_id no es 2, botón habilitado.");
-    }
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
   }
-
-
-
-
-
-
 
   animalsexosel() {
     let post = {
