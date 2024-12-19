@@ -115,76 +115,20 @@
                                           </div>
                                           <div class="col-md-12 mt-2">
                                               <div class="row">
-                                                  <div class="col-md-2">
-                                                      <label for="colFormLabelSm"
-                                                          class="col-form-label col-form-label-sm">Estirilizado?<span class="text-danger"> *</span></label>
-                                                      <div class="form-check form-switch mb-3" dir="ltr">
-                                                          <input type="checkbox" class="form-check-input" [(ngModel)]="p_ani_esteri" checked="" (change)="ChangeEsteri()">
-                                                          <label class="col-form-label-sm">{{confsiesteri}}</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-md-8">
+
+                                                  <div class="col-md-12">
                                                       <div class="form-floating">
                                                           <input [(ngModel)]="p_ani_nombre" type="text" class="form-control form-control-sm" style="text-transform: uppercase;">
                                                           <label>Nombre Mascota</label>
                                                       </div>
                                                   </div>
 
-                                                  <div class="col-md-2">
-                                                      <label for="colFormLabelSm"
-                                                          class="col-form-label col-form-label-sm">Fallecido?<span class="text-danger"> *</span></label>
-                                                      <div class="form-check form-switch mb-3" dir="ltr">
-                                                          <input type="checkbox" class="form-check-input" [(ngModel)]="p_ani_muerto" checked="" (change)="ChangeMuerto()">
-                                                          <label class="col-form-label-sm">{{confsimuerto}}</label>
-                                                      </div>
-                                                  </div>
+
 
                                               </div>
                                           </div>
 
-                                          <div class="col-md-12 mt-2">
-                                              <div class="row">
 
-                                                  <div class="col-md-2">
-                                                          <div class="form-floating">
-                                                              <input [(ngModel)]="p_ani_edadan" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                              <label>Edad</label>
-                                                          </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                          <div class="form-floating">
-                                                              <input [(ngModel)]="p_ani_numojo" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                              <label>Ojos</label>
-                                                          </div>
-                                                  </div>
-
-
-                                                  <div class="col-md-2">
-                                                      <div class="form-floating">
-                                                          <input [(ngModel)]="p_ani_pesnet" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                          <label>Peso(kg)</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                      <div class="form-floating">
-                                                          <input [(ngModel)]="p_ani_canpat" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                          <label>Patas</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                      <div class="form-floating">
-                                                          <input [(ngModel)]="p_ani_tamalt" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                          <label>Alto(cm)</label>
-                                                      </div>
-                                                  </div>
-                                                  <div class="col-md-2">
-                                                      <div class="form-floating">
-                                                          <input [(ngModel)]="p_ani_tamlar" type="text" class="form-control form-control-sm" (keypress)="validarNumero($event)">
-                                                          <label>Largo(cm)</label>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
 
 
                                       </div>

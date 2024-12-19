@@ -70,9 +70,10 @@ export class MascotaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ListarAnimal();
+
     this.especiesel();
     this.animalsexosel();
+    this.ListarAnimal();
   }
 
   ngOnDestroy(): void {

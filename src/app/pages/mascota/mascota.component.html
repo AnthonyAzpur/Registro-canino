@@ -81,7 +81,7 @@
                                     <button type="button" [routerLink]="['/mascota/crear-mascota']" class="btn btn-info btn-label btn-sm"><i class="mdi mdi-plus label-icon align-middle fs-16 me-2"></i> Nuevo</button>
                                 </div>
                                 <div class="col-sm-auto">
-                                    <button type="button" class="btn btn-success btn-label btn-sm" id="ExportarExcel" (click)="descargaExcel()"><i class="ri-markup-line label-icon align-middle fs-16 me-2"></i> Excel</button>
+                                    <button type="button" class="btn btn-success btn-label btn-sm" id="ExportarExcel" (click)="descargaExcel()"><i class="bi bi-filetype-xlsx label-icon align-middle fs-16 me-2"></i> Excel</button>
                                 </div>
                             </div>
                         </div>
@@ -105,8 +105,7 @@
                                             <th scope="col" class="text-center">ESPECIE</th>
                                             <th scope="col" class="text-center">RAZA</th>
                                             <th scope="col" class="text-center">SEXO</th>
-                                            <th scope="col" class="text-center">EDAD</th>
-                                            <th scope="col" class="text-center">ESTADO</th>
+
                                             <th scope="col" class="text-center">ACCIONES</th>
                                         </tr>
                                     </thead>
@@ -118,10 +117,9 @@
                                             <td>{{ data.esp_descri }}</td>
                                             <td>{{ data.anr_descri }}</td>
                                             <td>{{ data.ans_descri }}</td>
-                                            <td>{{ data.ani_edadan }}</td>
-                                            <td>{{ data.ani_estado }}</td>
+                                        
                                             <td>
-                                              <button type="button" (click)="RoutesNavigateAnimalPropietario(data.ani_id)" class="btn btn-primary btn-sm"><i class="bx bx-user fs-10"></i></button>
+                                              <button type="button" (click)="RoutesNavigateAnimalPropietario(data.ani_id)" class="btn btn-primary btn-sm"><i class="bi bi-box-arrow-in-right "></i></button>
                                               </td>
                                         </tr>
                                     </tbody>

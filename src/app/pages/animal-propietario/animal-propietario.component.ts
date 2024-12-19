@@ -17,9 +17,8 @@ import { AnonymousSubject } from "rxjs/internal/Subject";
 })
 export class AnimalPropietarioComponent implements OnInit {
 
-  param_ani_id: string = "";
-  param_aob_id: string = "";
-  param_ava_id: string = "";
+
+
 
   @ViewChild(DataTableDirective, { static: false })
   dtElement: any;
@@ -80,6 +79,7 @@ export class AnimalPropietarioComponent implements OnInit {
   p_ava_fecvac:string='';
   p_ava_activo:number=1;
   dataAnimalVacunas:any;
+  p_ava_id: string = "";
 //
   esp_descri:string='';
   anr_descri:string='';
@@ -129,7 +129,7 @@ export class AnimalPropietarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.param_ani_id = this.route.snapshot.params['ani_id'];
+    this.p_ani_id = this.route.snapshot.params['ani_id'];
     this.ListarAnimalPropietario();
     this.ListarAnimalObservaciones();
     this.ListarAnimalVacuna();
@@ -180,7 +180,7 @@ export class AnimalPropietarioComponent implements OnInit {
   ListarAnimalPropietario() {
     this.spinner.show();
     let data_post = {
-      p_ani_id: this.param_ani_id,
+      p_ani_id: this.p_ani_id,
       p_esr_id: this.p_esr_id,
     };
 
@@ -205,8 +205,8 @@ export class AnimalPropietarioComponent implements OnInit {
   ListarAnimalObservaciones() {
     this.spinner.show();
     let data_post = {
-      p_aob_id: this.param_aob_id,
-      p_ani_id: this.param_ani_id,
+      p_aob_id: this.p_aob_id,
+      p_ani_id: this.p_ani_id,
       p_aob_activo: this.p_aob_activo
 
     };
@@ -232,8 +232,8 @@ export class AnimalPropietarioComponent implements OnInit {
   ListarAnimalVacuna() {
     this.spinner.show();
     let data_post = {
-      p_ava_id: this.param_ava_id,
-      p_ani_id: this.param_ani_id,
+      p_ava_id: this.p_ava_id,
+      p_ani_id: this.p_ani_id,
       p_ava_activo: this.p_ava_activo
 
     };
@@ -260,7 +260,7 @@ export class AnimalPropietarioComponent implements OnInit {
 
   ListarAnimal() {
     let data_post = {
-      p_ani_id: this.param_ani_id,
+      p_ani_id: this.p_ani_id,
       p_esr_id: this.p_esr_id,
       p_esp_id: this.p_esp_id,
       p_anr_id: this.p_anr_id,
@@ -328,7 +328,7 @@ export class AnimalPropietarioComponent implements OnInit {
     } else {
       // Preparar los datos para el envío
       let dataPost = {
-        p_ani_id: this.param_ani_id,
+        p_ani_id: this.p_ani_id,
         p_aob_descri: this.p_aob_descri,
         p_aob_activo: this.p_aob_activo,
       };
@@ -382,7 +382,7 @@ export class AnimalPropietarioComponent implements OnInit {
     } else {
       // Preparar los datos para el envío
       let dataPost = {
-        p_ani_id: this.param_ani_id,
+        p_ani_id: this.p_ani_id,
         p_ava_descri: this.p_ava_descri,
         p_ava_fecvac: this.p_ava_fecvac,
         p_ava_activo: this.p_ava_activo,
@@ -430,12 +430,12 @@ export class AnimalPropietarioComponent implements OnInit {
 
 
   guardarRegistro(){
-    if(this.p_ani_id == 0){
+    if(Number(this.p_ani_id) == 0){
       Swal.fire('Debe ingresar un Propietario', 'Vuelva a intentarlo', 'error');
     }else{
       let dataPost = {
-        p_ani_id:this.param_ani_id,
-        p_prp_id:this.p_per_id,
+        p_ani_id:Number(this.p_ani_id),
+        p_prp_id:Number(this.p_per_id),
         p_anp_fecini:this.p_anp_fecini,
       };
       Swal.fire({

@@ -142,6 +142,7 @@ export class CrearMascotaComponent implements OnInit {
       dataPost.append('p_ani_imgext',p_ani_imgext);
 
     } else {
+      
       console.error('No se ha seleccionado ningún archivo.');
     }
     Swal.fire({
