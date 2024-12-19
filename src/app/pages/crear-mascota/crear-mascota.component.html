@@ -90,15 +90,17 @@
                                                       </div>
                                                   </div>
                                                   <div class="col-md-4">
-                                                      <div class="form-floating">
-                                                              <select class="form-select" [(ngModel)]="p_anr_id" data-choices-sorting="true">
-                                                              <option selected="" value="0">Seleccione...</option>
-                                                              <option *ngFor="let data of datosTipoRaza"
-                                                              value="{{data.anr_id}}">{{data.anr_descri}}</option>
-                                                          </select>
-                                                              <label>Raza</label>
-                                                      </div>
+                                                    <div class="form-floating">
+                                                      <select class="form-select" [(ngModel)]="p_anr_id" data-choices-sorting="true" (change)="peligrososion()">
+                                                        <option selected="" value="0">Seleccione...</option>
+                                                        <option *ngFor="let data of datosTipoRaza" value="{{data.anr_id}}">
+                                                          {{data.anr_descri}}
+                                                        </option>
+                                                      </select>
+                                                      <label>Raza</label>
+                                                    </div>
                                                   </div>
+
                                                   <div class="col-md-4">
                                                       <div class="form-floating">
                                                               <select class="form-select"
@@ -135,8 +137,8 @@
                                       <div class="col-md-12 mt-2">
                                               <div class="row">
                                                   <div class="text-end">
-                                                      <button (click)="GuardarMascota()" type="button" class="btn btn-primary" style="margin-right: 5px;"> <i class=""></i>Guardar</button>
-                                                      <button type="button" class="btn btn-danger" [routerLink]="['/mascota']">Cancelar</button>
+                                                      <button [disabled]="isSaveDisabled" (click)="GuardarMascota()" type="button" class="btn btn-primary" style="margin-right: 5px;"> <i class=""></i>Guardar</button>
+                                                      <button  type="button" class="btn btn-danger" [routerLink]="['/mascota']">Cancelar</button>
                                                   </div>
                                               </div>
                                           </div>

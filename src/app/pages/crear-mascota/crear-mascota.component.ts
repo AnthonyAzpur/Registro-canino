@@ -29,6 +29,9 @@ export class CrearMascotaComponent implements OnInit {
   imagenrecort: File | null = null;
   form!: FormGroup;
 
+
+  isSaveDisabled = true;
+
   //Var
   datosTipoEspecie: any;
   datosTipoSexo: any;
@@ -37,6 +40,7 @@ export class CrearMascotaComponent implements OnInit {
   p_ani_id: number = 0;
   p_esp_id: number = 0;
   p_anr_id: number = 0;
+  anr_altplg: boolean = false;
   p_ans_id: number = 0;
   p_ani_nombre: string = '';
   p_ani_pesnet: string = '';
@@ -60,6 +64,9 @@ export class CrearMascotaComponent implements OnInit {
   // p_esp_descri: string = '';
   // p_esp_activo: number = 9;
 
+
+
+
   //Functions
 
   constructor(
@@ -82,20 +89,20 @@ export class CrearMascotaComponent implements OnInit {
     this.animalsexosel();
   }
 
-  ChangeMuerto(){
+  ChangeMuerto() {
     console.log(this.p_ani_muerto);
     if (this.p_ani_muerto) {
       this.confsimuerto = 'SI';
-    }else{
+    } else {
       this.confsimuerto = 'NO';
     }
   }
 
-  ChangeEsteri(){
+  ChangeEsteri() {
     console.log(this.p_ani_esteri);
     if (this.p_ani_esteri) {
       this.confsiesteri = 'SI';
-    }else{
+    } else {
       this.confsiesteri = 'NO';
     }
   }
@@ -137,12 +144,12 @@ export class CrearMascotaComponent implements OnInit {
       dataPost.append('p_ani_edadan', p_ani_edadan.toString());
       dataPost.append('p_ani_muerto', p_ani_muerto.toString());
       dataPost.append('p_ani_esteri', p_ani_esteri.toString());
-      dataPost.append('nom_img_temp','');
+      dataPost.append('nom_img_temp', '');
       dataPost.append('p_ani_imgfot_file[]', this.imagenrecort, this.imagenrecort.name);
-      dataPost.append('p_ani_imgext',p_ani_imgext);
+      dataPost.append('p_ani_imgext', p_ani_imgext);
 
     } else {
-      
+
       console.error('No se ha seleccionado ningún archivo.');
     }
     Swal.fire({
@@ -222,6 +229,43 @@ export class CrearMascotaComponent implements OnInit {
     });
 
   }
+
+
+  peligrososion() {
+    if (this.p_anr_id == 2) {
+
+      this.isSaveDisabled = true;
+      console.log("p_anr_id es 2, botón deshabilitado.");
+      Swal.fire({
+        title: '¡Advertencia!',
+        text: 'Este animal es peligroso, ¿deseas guardar el registro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.isSaveDisabled = false;
+          console.log("El registro puede guardarse.");
+        } else {
+          this.isSaveDisabled = true;
+          console.log("El registro no puede guardarse.");
+        }
+      });
+
+    } else {
+      
+      console.log(this.p_anr_id, "<-- estes es el valorr ")
+      this.isSaveDisabled = false;
+      console.log("p_anr_id no es 2, botón habilitado.");
+    }
+  }
+
+
+
+
+
+
 
   animalsexosel() {
     let post = {
